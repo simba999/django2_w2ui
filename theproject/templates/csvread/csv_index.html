@@ -6,7 +6,7 @@
     <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.rc1.min.js"></script>
 </head>
 <body>
-    <div>{{ request.session.column_names }}</div>
+    <div>{{ column_list }}</div>
     <div id="grid" style="width: 100%; height: 250px;"></div>
 </body>
 <script>
@@ -43,6 +43,8 @@
     //     });
     // });
 
+    var column_list = JSON.parse('{{ column_list | escapejs }}')
+    console.log('coloum_list:', column_list)
     $(function () {
         $('#grid').w2grid({
             name: 'grid',

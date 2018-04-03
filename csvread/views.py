@@ -4,21 +4,24 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render_to_response, render
+from django.template import RequestContext
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import pandas as pd
 import os
+import json
 
 from theproject import theproject_response
-from django.template import RequestContext
 import pdb
 
 
 
 def index (request):
     request.session['column_names'] = ['Name']
-    return render(request, 'csvread/csv_index.html')
+    column_names = request.session['column_names'];
+    column_list = json.dumps(column_names)
+    return render(request, 'csvread/csv_index.html', {'column_list': column_list})
 
 
 class CsvReadFile(APIView):
