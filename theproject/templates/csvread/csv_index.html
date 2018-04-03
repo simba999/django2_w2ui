@@ -6,7 +6,6 @@
     <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.rc1.min.js"></script>
 </head>
 <body>
-    <div>{{ column_list }}</div>
     <div id="grid" style="width: 100%; height: 250px;"></div>
 </body>
 <script>
@@ -43,21 +42,74 @@
     //     });
     // });
 
+    // cloumn list what you want display (get from context)
     var column_list = JSON.parse('{{ column_list | escapejs }}')
-    console.log('coloum_list:', column_list)
-    $(function () {
-        $('#grid').w2grid({
-            name: 'grid',
-            header: 'List of Names',
-            method: 'GET',
-            columns: [
-                { field: 'interval_in_NCBI_GDV', caption: 'interval in NCBI-GDV', size: '20%' },
-                { field: 'Category', caption: 'Category', size: '30%' },
-                { field: 'Gene_ID_v3', caption: 'Gene ID-v3', size: '40%' }
-            ]
+
+    function w2uiGrid(selector, column_list) {
+        // set width in screen         
+        var item_size = '' + (Math.floor(100/column_list.length)) + '%';
+        // api endpoint for getting data
+        var api_url = '/csvread/api/csv/';
+        
+        $(function () {
+            $('#grid').w2grid({
+                name: 'grid',
+                header: 'List of Names',
+                method: 'GET'
+            });
+            w2ui['grid'].load(api_url, function(res) {
+                console.log('get data: ', res)
+            });
+
+            // add columns dynamically
+            column_list.map(function(column) {
+                 w2ui['grid'].addColumn({ field: column, caption: column, size: item_size })
+            })
+
+            w2ui['grid'].on('click', function(event) {
+                var content = event['originalEvent'].target.textContent;
+                if (content && content != '') {
+                    if (content.indexOf('http://') > -1 || content.indexOf('https://') > -1) {
+                        window.open(content, '_blank')    
+                    }
+                }
+            })
+            
         });
-        w2ui['grid'].load('/csvread/api/csv/');
-        w2ui['grid'].addColumn({ field: 'GrameneLink_v3', caption: 'GrameneLink-v3', size: '120px' })
-    });
+    }
+
+    // function w2uiGrid(selector, column_list) {
+    //     // set width in screen         
+    //     var item_size = '' + (Math.floor(100/column_list.length)) + '%';
+    //     // api endpoint for getting data
+    //     var api_url = '/csvread/api/csv/';
+        
+    //     $(function () {
+    //         $('#grid').w2grid({
+    //             name: 'grid',
+    //             header: 'List of Names',
+    //             method: 'GET'
+    //         });
+    //         w2ui['grid'].load(api_url, function(res) {
+    //             console.log('get data: ', res)
+    //         });
+
+    //         // add columns dynamically
+    //         column_list.map(function(column) {
+    //              w2ui['grid'].addColumn({ field: column, caption: column, size: item_size })
+    //         })
+
+    //         w2ui['grid'].on('click', function(event) {
+    //             var content = event['originalEvent'].target.textContent;
+    //             if (content && content != '') {
+    //                 if (content.indexOf('http://') > -1 || content.indexOf('https://') > -1) {
+    //                     window.open(content, '_blank')    
+    //                 }
+    //             }
+    //         })
+            
+    //     });
+    // }
+    
 </script>
 </html>

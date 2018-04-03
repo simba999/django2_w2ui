@@ -18,9 +18,11 @@ import pdb
 
 
 def index (request):
-    request.session['column_names'] = ['Name']
+    request.session['column_names'] = ['Category', 'Gene_ID_v3', 'GrameneLink_v3']
+    # get column list from session
     column_names = request.session['column_names'];
     column_list = json.dumps(column_names)
+
     return render(request, 'csvread/csv_index.html', {'column_list': column_list})
 
 
@@ -33,7 +35,9 @@ class CsvReadFile(APIView):
         """
         print(os.getcwd())
         df_csv = pd.read_csv(os.getcwd() + '/csvread/files/datafile.csv')
-        datastore = json.loads(df_csv.to_json(orient='records'))
+        # get column list from session
+        column_list = request.session['column_names']
+        datastore = json.loads(df_csv.filter(items=column_list).to_json(orient='records'))
         gridresponse = {
             'total': len(datastore),
             'records': datastore
