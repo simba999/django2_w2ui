@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.rc1.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.rc1.min.js"></script>
+</head>
+<body>
+    <div id="grid" style="width: 100%; height: 250px;"></div>
+</body>
+<script>
+//    var records = null;
+//    $.ajax({
+//        type: "GET",
+//        data: ({}),
+//        dataType: 'json',
+//        url: "/csvread/api/csv/",
+//        success: function(data){
+//             records = data.payload;
+//             console.log(data.payload);
+//             w2ui['grid'].reload();
+//             console.log("Grid reloaded");
+//
+//        }
+//    });
+
+    $(function () {
+        $('#grid').w2grid({
+            name: 'grid',
+            header: 'List of Names',
+            method: 'GET',
+            columns: [
+                { field: 'interval_in_NCBI_GDV', caption: 'interval in NCBI-GDV', size: '20%' },
+                { field: 'Category', caption: 'Category', size: '30%' },
+                { field: 'Gene_ID_v3', caption: 'Gene ID-v3', size: '40%' },
+                { field: 'GrameneLink_v3', caption: 'GrameneLink-v3', size: '120px' },
+                { field: 'Name', caption: 'Name', size: '120px' }
+            ]
+        });
+        w2ui['grid'].load('/csvread/api/csv/');
+    });
+</script>
+</html>
