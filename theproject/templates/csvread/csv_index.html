@@ -6,6 +6,7 @@
     <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.rc1.min.js"></script>
 </head>
 <body>
+    <div>{{ request.session.column_names }}</div>
     <div id="grid" style="width: 100%; height: 250px;"></div>
 </body>
 <script>
@@ -24,6 +25,24 @@
 //        }
 //    });
 
+    // $(function () {
+    //     $('#grid').w2grid({
+    //         name: 'grid',
+    //         header: 'List of Names',
+    //         method: 'GET',
+    //         columns: [
+    //             { field: 'interval_in_NCBI_GDV', caption: 'interval in NCBI-GDV', size: '20%' },
+    //             { field: 'Category', caption: 'Category', size: '30%' },
+    //             { field: 'Gene_ID_v3', caption: 'Gene ID-v3', size: '40%' },
+    //             { field: 'GrameneLink_v3', caption: 'GrameneLink-v3', size: '120px' },
+    //             { field: 'Name', caption: 'Name', size: '120px' }
+    //         ]
+    //     });
+    //     w2ui['grid'].load('/csvread/api/csv/', function(res) {
+    //         console.log('get response: ', res)
+    //     });
+    // });
+
     $(function () {
         $('#grid').w2grid({
             name: 'grid',
@@ -32,12 +51,11 @@
             columns: [
                 { field: 'interval_in_NCBI_GDV', caption: 'interval in NCBI-GDV', size: '20%' },
                 { field: 'Category', caption: 'Category', size: '30%' },
-                { field: 'Gene_ID_v3', caption: 'Gene ID-v3', size: '40%' },
-                { field: 'GrameneLink_v3', caption: 'GrameneLink-v3', size: '120px' },
-                { field: 'Name', caption: 'Name', size: '120px' }
+                { field: 'Gene_ID_v3', caption: 'Gene ID-v3', size: '40%' }
             ]
         });
         w2ui['grid'].load('/csvread/api/csv/');
+        w2ui['grid'].addColumn({ field: 'GrameneLink_v3', caption: 'GrameneLink-v3', size: '120px' })
     });
 </script>
 </html>
