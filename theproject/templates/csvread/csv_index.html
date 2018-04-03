@@ -52,21 +52,22 @@
         var api_url = '/csvread/api/csv/';
         
         $(function () {
-            $('#grid').w2grid({
-                name: 'grid',
+            var newSelector = '#' + selector;
+            $(newSelector).w2grid({
+                name: selector,
                 header: 'List of Names',
                 method: 'GET'
             });
-            w2ui['grid'].load(api_url, function(res) {
+            w2ui[selector].load(api_url, function(res) {
                 console.log('get data: ', res)
             });
 
             // add columns dynamically
             column_list.map(function(column) {
-                 w2ui['grid'].addColumn({ field: column, caption: column, size: item_size })
+                 w2ui[selector].addColumn({ field: column, caption: column, size: item_size })
             })
 
-            w2ui['grid'].on('click', function(event) {
+            w2ui[selector].on('click', function(event) {
                 var content = event['originalEvent'].target.textContent;
                 if (content && content != '') {
                     if (content.indexOf('http://') > -1 || content.indexOf('https://') > -1) {
@@ -78,38 +79,6 @@
         });
     }
 
-    // function w2uiGrid(selector, column_list) {
-    //     // set width in screen         
-    //     var item_size = '' + (Math.floor(100/column_list.length)) + '%';
-    //     // api endpoint for getting data
-    //     var api_url = '/csvread/api/csv/';
-        
-    //     $(function () {
-    //         $('#grid').w2grid({
-    //             name: 'grid',
-    //             header: 'List of Names',
-    //             method: 'GET'
-    //         });
-    //         w2ui['grid'].load(api_url, function(res) {
-    //             console.log('get data: ', res)
-    //         });
-
-    //         // add columns dynamically
-    //         column_list.map(function(column) {
-    //              w2ui['grid'].addColumn({ field: column, caption: column, size: item_size })
-    //         })
-
-    //         w2ui['grid'].on('click', function(event) {
-    //             var content = event['originalEvent'].target.textContent;
-    //             if (content && content != '') {
-    //                 if (content.indexOf('http://') > -1 || content.indexOf('https://') > -1) {
-    //                     window.open(content, '_blank')    
-    //                 }
-    //             }
-    //         })
-            
-    //     });
-    // }
-    
+    w2uiGrid('grid', column_list);    
 </script>
 </html>
